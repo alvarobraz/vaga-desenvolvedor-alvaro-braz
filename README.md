@@ -119,7 +119,7 @@ $ docker compose -f apps/api/docker-compose.yml up --build -d
 
 # Executa as seeds de Admin e Products
 $ pnpm --filter @my-project/api seed:admin
-$ pnpm --filter @my-project/api seed:product
+$ pnpm --filter @my-project/api seed:products
 
 $ pnpm --filter @my-project/api start:dev
 
