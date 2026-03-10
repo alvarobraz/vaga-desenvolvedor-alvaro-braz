@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint check
+        run: pnpm --filter @my-project/api lint
+
+      - name: Run Unit Tests
+        run: pnpm --filter @my-project/api test
+        env:
+          NODE_ENV: test
+          JWT_SECRET: ${{ secrets.JWT_SECRET || 'test_secret_only_for_ci_validation' }}
+          DB_PASS: ${{ secrets.DB_PASS || 'docker' }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL || 'postgresql://docker:docker@localhost:5432/signo-tech' }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker Image (Check)
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./apps/api/Dockerfile
+          push: false
+          tags: alvaro-braz/signo-tech-api:latest
+          build-args: |
+            NODE_ENV=production

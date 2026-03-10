@@ -10,8 +10,34 @@ services:
       - POSTGRESQL_DATABASE=signo-tech
     volumes:
       - pgdata:/bitnami/postgresql
-      # Adicione esta linha abaixo:
       - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U docker -d signo-tech']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ../../ # Sobe para a raiz do workspace pnpm
+      dockerfile: apps/api/Dockerfile
+    container_name: signo-tech-api
+    ports:
+      - '3333:3333'
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://docker:docker@postgres:5432/signo-tech?schema=public
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=docker
+      - DB_PASS=docker
+      - DB_NAME=signo-tech
+      - JWT_SECRET=${JWT_SECRET} # Puxar do arquivo .env local
+      - PORT=3333
+    restart: always
 
 volumes:
   pgdata:

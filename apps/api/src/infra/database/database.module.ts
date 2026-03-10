@@ -10,23 +10,25 @@ import { OrdersRepository } from '@/domain/application/repositories/orders-repos
 import { SequelizeOrdersRepository } from './sequelize/repositories/sequelize-order-repository'
 import { OrderItemModel } from './sequelize/models/order-item.model'
 import { OrderModel } from './sequelize/models/order.model'
+import { ConfigService } from '@nestjs/config'
 
 @Module({
   imports: [
-    SequelizeModule.forRoot({
-      dialect: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'docker',
-      password: 'docker',
-      database: 'signo-tech',
-      models: [ClientModel, ProductModel, OrderModel, OrderItemModel],
-      autoLoadModels: true,
-      synchronize: true,
-      sync: {
-        alter: true,
-      },
-      logging: false,
+    SequelizeModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        dialect: 'postgres',
+
+        host: config.get<string>('DB_HOST', 'localhost'),
+        port: config.get<number>('DB_PORT', 5432),
+        username: config.get<string>('DB_USER', 'docker'),
+        password: config.get<string>('DB_PASS', 'docker'),
+        database: config.get<string>('DB_NAME', 'signo-tech'),
+        models: [ClientModel, ProductModel, OrderModel, OrderItemModel],
+        autoLoadModels: true,
+        synchronize: true,
+        logging: false,
+      }),
     }),
     SequelizeModule.forFeature([
       ClientModel,
