@@ -9,7 +9,7 @@ async function run() {
     logging: false,
   })
 
-  await seedProducts(sequelize)
+  await seedProducts()
   await sequelize.close()
 }
 
