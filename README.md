@@ -96,9 +96,6 @@ As seguintes tecnologias foram utilizadas no projeto:
 
 Para rodar este projeto, você só precisa ter o **Docker** instalado em sua máquina.
 
-```bash
-## :checkered_flag: Como rodar o projeto ##
-
 Para garantir a compatibilidade, este projeto utiliza a versão **20.19.3** do Node.js.
 
 ### 1. Preparação do Ambiente
