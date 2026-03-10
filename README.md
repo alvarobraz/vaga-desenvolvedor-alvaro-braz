@@ -111,15 +111,15 @@ $ nvm use 20.19.3
 # Instale as dependências do workspace
 $ pnpm install
 
-
 # Configure as variáveis de ambiente
 $ cp apps/api/.env.example apps/api/.env
 
-# Suba os containers (Banco + API)
-$ docker compose up --build -d
+# Na raiz do projeto, aponte para o arquivo específico:
+$ docker compose -f apps/api/docker-compose.yml up --build -d
 
 # Executa as seeds de Admin e Products
-$pnpm --filter @my-project/api seed:admin$ pnpm --filter @my-project/api seed:product
+$ pnpm --filter @my-project/api seed:admin
+$ pnpm --filter @my-project/api seed:product
 
 $ pnpm --filter @my-project/api start:dev
 
