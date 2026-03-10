@@ -97,16 +97,32 @@ As seguintes tecnologias foram utilizadas no projeto:
 Para rodar este projeto, você só precisa ter o **Docker** instalado em sua máquina.
 
 ```bash
-# 1. Clone o projeto
-$ git clone [https://github.com/alvarobraz/vaga-desenvolvedor-alvaro-braz](https://github.com/alvarobraz/vaga-desenvolvedor-alvaro-braz)
+## :checkered_flag: Como rodar o projeto ##
 
-# 2. Acesse a pasta
+Para garantir a compatibilidade, este projeto utiliza a versão **20.19.3** do Node.js.
+
+### 1. Preparação do Ambiente
+```bash
+# Clone o projeto
+$ git clone https://github.com/alvarobraz/vaga-desenvolvedor-alvaro-braz
+
 $ cd vaga-desenvolvedor-alvaro-braz
 
-# 3. Configure as variáveis de ambiente
-# O projeto já possui um .env.example. O Docker Compose está configurado
-# para usar os valores padrão para o teste.
+# Garanta a versão correta do Node (NVM)
+$ nvm use 20.19.3
+
+# Instale as dependências do workspace
+$ pnpm install
+
+
+# Configure as variáveis de ambiente
 $ cp apps/api/.env.example apps/api/.env
 
-# 4. Suba o ambiente completo (Banco + API)
+# Suba os containers (Banco + API)
 $ docker compose up --build -d
+
+# Executa as seeds de Admin e Products
+$pnpm --filter @my-project/api seed:admin$ pnpm --filter @my-project/api seed:product
+
+$ pnpm --filter @my-project/api start:dev
+
