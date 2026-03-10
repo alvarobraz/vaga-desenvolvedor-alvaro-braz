@@ -37,6 +37,7 @@ export class SequelizeOrdersRepository implements OrdersRepository {
     { page }: PaginationParams,
     filter?: OrdersFilterParams,
   ): Promise<Order[]> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const where: any = {}
 
     if (filter?.orderCode) where.orderCode = filter.orderCode

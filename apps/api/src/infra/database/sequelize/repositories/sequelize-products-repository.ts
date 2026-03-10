@@ -44,6 +44,7 @@ export class SequelizeProductsRepository implements ProductsRepository {
     { page }: PaginationParams,
     filter?: ProductsFilterParams,
   ): Promise<Product[]> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const where: any = {}
 
     if (filter?.title) {

@@ -24,15 +24,15 @@ const queryParamsSchema = z.object({
 
 type QueryParamsSchema = z.infer<typeof queryParamsSchema>
 
-const queryValidationPipe = new ZodValidationPipe(queryParamsSchema)
-
 @Controller('/products')
 @UseGuards(JwtAuthGuard)
 export class FetchProductsController {
   constructor(private fetchProducts: FetchProductsUseCase) {}
 
   @Get()
-  async handle(@Query(queryValidationPipe) query: QueryParamsSchema) {
+  async handle(
+    @Query(new ZodValidationPipe(queryParamsSchema)) query: QueryParamsSchema,
+  ) {
     const { page, title, sku } = query
 
     const result = await this.fetchProducts.execute({

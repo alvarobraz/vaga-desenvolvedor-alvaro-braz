@@ -1,8 +1,7 @@
-import { Sequelize } from 'sequelize-typescript'
 import { ProductModel } from '../models/product.model'
 import { randomUUID } from 'node:crypto'
 
-export async function seedProducts(sequelize: Sequelize) {
+export async function seedProducts() {
   const productsToCreate = []
 
   for (let i = 1; i <= 30; i++) {
